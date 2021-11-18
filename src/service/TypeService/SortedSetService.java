@@ -12,17 +12,14 @@ public class SortedSetService {
         if (dao.getDb().containsKey(setKey)) {
             sortedSet = (SortedSet) dao.getDb().get(setKey);
             remove(sortedSet, key);
-            if (sortedSet.getScoreToKey().containsKey(score)) {
-                sortedSet.getScoreToKey().get(score).add(key);
-            } else {
-                TreeSet<String> keys = new TreeSet<>();
-                keys.add(key);
-                sortedSet.getScoreToKey().put(score, keys);
-                dao.getTypes().put(setKey, Types.ZSET);
-            }
-        } else {
+        }
+        else {
             sortedSet = new SortedSet();
             dao.getDb().put(setKey, sortedSet);
+        }
+        if (sortedSet.getScoreToKey().containsKey(score)) {
+            sortedSet.getScoreToKey().get(score).add(key);
+        } else {
             TreeSet<String> keys = new TreeSet<>();
             keys.add(key);
             sortedSet.getScoreToKey().put(score, keys);
